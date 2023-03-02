@@ -1,19 +1,53 @@
-import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
+// import React;
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
+import {
+  HashRouter,
+  // BrowserRouter,
+  Routes,
+  Route,
+  Outlet
+} from "react-router-dom";
+
+import React, { useState, useEffect } from 'react'
+import {DendroData} from './comps/Interfaces'
+import InputView from './InputView';
+import VizHolder from './VizView';
+
+import styles from './styles/Home.module.css'
+import './styles/globals.css';
+
+
+const App = () => {
+  const [dendrosData, setDendrosData] = useState<DendroData[]>([])
+
+  useEffect(()=>{
+    const year = new Date().getFullYear();
+    document.getElementsByClassName('footer-inner')[0].textContent = `2015-${year} 3D Medicines Corporation`;
+  },[])
+
+
+  return (
+    <Routes>
+    <Route path="/" element={
+      <div className={styles.container}>
+          <Outlet/>
+      </div>}>
+      <Route path="/" element={<InputView setDendrosData={setDendrosData}/>} />
+      <Route path="viz" element={<VizHolder DendrosData={dendrosData} />} />
+    </Route>
+  </Routes>
+    
+  )
+}
+
+const root = ReactDOM.createRoot(document.getElementById('root')!);
 root.render(
   <React.StrictMode>
-    <App />
+    <HashRouter>
+      <App />
+    </HashRouter>
   </React.StrictMode>
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
