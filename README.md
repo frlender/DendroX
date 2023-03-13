@@ -1,46 +1,19 @@
-# Getting Started with Create React App
+# DendroX
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Multi-level multi-cluster selections in a dendrogram
 
-## Available Scripts
+https://frlender.github.io/dendrox-app/
 
-In the project directory, you can run:
+## Introduction
 
-### `npm start`
+ Cluster heatmaps are widely used in biology and other fields to uncover clustering patterns in data matrices. Most cluster heatmap packages provide utility functions to divide the dendrograms at a certain level to obtain clusters, but it is often difficult to identify the most appropriate cut in the dendrogram to obtain the clusters seen in the heatmap. To address this issue, we developed DendroX, a web app that provides interactive visualization of a dendrogram in which users can divide the dendrogram at any level and into any number of clusters. The labels of the divided clusters can be passed on for downstream functional analysis. Although there are several online tools to generate cluster heatmaps, these tools mostly duplicate the functions provided by existing packages and do not have the cluster-selection feature as DendroX does. We believe the proposed app fills a gap in the cluster-analysis workflow and improves the efficiency of using a cluster heatmap.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
 
-### `npm test`
+![image](https://github.com/frlender/dendrox/blob/main/asset/Figure_1.png)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## License
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+The source code for the site is licensed under the MIT license.
