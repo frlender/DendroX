@@ -25,6 +25,8 @@ export default function Dendro(props:DendroProps){
     const [resetFlag, setResetFlag] = useState<boolean>(false)
     const [showLabel, setShowLabel] = useState<boolean>(false)
 
+    const [enrichrOpen,setEnrichrOpen] = useState<boolean>(false)
+
     const rpInit: RenderMP = {}
     const names = Object.values(mp).filter(x=>x.leaf).sort((a,b)=>a.x-b.x).map(x=>x.name)
     const keys = Object.keys(mp)
@@ -148,6 +150,10 @@ export default function Dendro(props:DendroProps){
         element.href = window.URL.createObjectURL(blob);
         element.click();
         element.remove();
+    }
+
+    const toggleEnrichr = ()=>{
+        setEnrichrOpen(!enrichrOpen)
     }
 
     useEffect(()=>{
@@ -368,7 +374,7 @@ export default function Dendro(props:DendroProps){
     const hv = horizontal ? 'h':'v'
     const mo = props.countData() === 1 ? '':'m'
 
-    const enrichr = ()=>{
+    const enrichr = (enrichrType:'Enrichr'|'DrugEnrichr')=>{
         // copied from https://github.com/frlender/L1000CDS2/blob/0638df8b0e1fe5732e100e191266b733bd849eb5/public/scripts/services/services.js
 
         // var defaultOptions = {
@@ -385,7 +391,7 @@ export default function Dendro(props:DendroProps){
 
   		var form = document.createElement('form');
   		form.setAttribute('method', 'post');
-  		form.setAttribute('action', 'http://amp.pharm.mssm.edu/Enrichr/enrich');
+  		form.setAttribute('action', `http://amp.pharm.mssm.edu/${enrichrType}/enrich`);
     	form.setAttribute('target', '_blank');
   		form.setAttribute('enctype', 'multipart/form-data');
 
@@ -416,9 +422,13 @@ export default function Dendro(props:DendroProps){
                         <button onClick={(e)=>props.rmData(data.id)}><RxCross2 className='d-icon'/></button>
                     </span>}
                 <button onClick={(e)=>setResetFlag(true)}> <RxReload className='d-icon'/> </button>
-                {isGeneList(names) && 
-                    <button onClick={(e)=>enrichr()}><RxOpenInNewWindow className='d-icon'/></button>
-                }
+                {enrichrOpen && <div className='enrichr-panel'>
+                    <div><button className='enrichr-panel-btn' onClick={e=>enrichr('Enrichr')}>Gene Symbol Enrich</button></div>
+                    <div><button className='enrichr-panel-btn' onClick={e=>enrichr('DrugEnrichr')}>Drug Name Enrich</button></div>
+                    <div><button className='enrichr-panel-btn' onClick={e=>toggleEnrichr()}>Close</button></div>
+                </div>}
+                <button onClick={(e)=>toggleEnrichr()} 
+                    style={enrichrOpen?{'background': '#ffe3a9'}:{}}><RxOpenInNewWindow className='d-icon'/></button>
                 <button onClick={(e)=>setShowLabel(!showLabel)}
                     style={showLabel?{'background': '#ffe3a9'}:{}}>
                     <RxEyeOpen className='d-icon'></RxEyeOpen>
