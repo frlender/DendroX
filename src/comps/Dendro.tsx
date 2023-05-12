@@ -27,7 +27,7 @@ export default function Dendro(props:DendroProps){
 
     const [enrichrOpen,setEnrichrOpen] = useState<boolean>(false)
 
-    const rpInit: RenderMP = {}
+    let rpInit: RenderMP = {}
     const names = Object.values(mp).filter(x=>x.leaf).sort((a,b)=>a.x-b.x).map(x=>x.name)
     const keys = Object.keys(mp)
     let leaf_count = 0
@@ -35,6 +35,7 @@ export default function Dendro(props:DendroProps){
             rpInit[key] = {}
             if(mp[key].leaf) leaf_count+=1
         })
+    if(data.rp) rpInit = data.rp
     const rp = useRef<RenderMP>(rpInit).current
     // // should not do the following to initialize rp!!!
     // // this will set rp[key] to undefined after every render
@@ -42,6 +43,17 @@ export default function Dendro(props:DendroProps){
     // Object.keys(mp).forEach(key =>{
     //     rp[key] = {}
     // })
+
+    // for session save
+    data.rp = rp
+    data.currentImgUrl = data.imgUrl
+    const addCurrentImgUrl = (url:string)=>{
+        data.currentImgUrl = url
+    }
+    const addImgSize = (size:number)=>{
+        data.imgSize = size
+    }
+
     const widthInit = horizontalInit ? 300 : 500
     const heightInit = horizontalInit ? 500 : 100
     const [clusterWidth, setClusterWidth] = useState(
@@ -50,21 +62,31 @@ export default function Dendro(props:DendroProps){
     const [clusterHeight, setClusterHeight] = useState(
         data.clusterHeight ? data.clusterHeight : heightInit
     )
+
+    // for session save
+    data.clusterHeight = clusterHeight
+    data.clusterWidth = clusterWidth
     
-    let unit:number, paddingh:number, paddingw:number, width:number, height: number
+    let unit:number, paddingh:number, paddingw:number, width:number, height: number;
+    let imgWidth:number, imgHeight:number;
     if(horizontal){
         unit = clusterHeight/(leaf_count-1)
         paddingh = unit/2
         paddingw = unit
         width = clusterWidth + unit
         height = clusterHeight + unit
+        imgWidth = data.imgSize?data.imgSize:500
+        imgHeight = height
     }else{
         unit = clusterWidth/(leaf_count-1)
         paddingw = unit/2
         paddingh = unit
         width = clusterWidth + unit
         height = clusterHeight + unit
+        imgWidth = width
+        imgHeight = data.imgSize?data.imgSize:500
     }
+    console.log(imgWidth,imgHeight)
     
     const pathsRef = useRef<d3.Selection<SVGPathElement, string, SVGGElement, unknown>>()
     const circlesRef = useRef<d3.Selection<SVGCircleElement, string, SVGGElement, unknown>>()
@@ -103,6 +125,7 @@ export default function Dendro(props:DendroProps){
             ch =  node.leaves!.length/
                 mp[maxKey].leaves!.length*clusterHeight
             cw = node.y/mp[maxKey].y*clusterWidth
+            ch = ch < 100 ? 100:ch
         }else{
             ch = node.y/mp[maxKey].y*clusterHeight
             cw = node.leaves!.length/
@@ -264,9 +287,12 @@ export default function Dendro(props:DendroProps){
         
         circles.append("title")
                .text(function(d) { 
-                    const text = mp[d].id === mp[d].name ? 
+                    let text = mp[d].id === mp[d].name ? 
                         mp[d].id : `${mp[d].id} ${mp[d].name}`
-                    return text})
+                    // console.log('abc')
+                    text = `${text} \n${mp[d].leaves!.length} leaves`
+                    return text
+                })
         
         circlesRef.current = circles
         // circlesRef.current.attr('opacity',1)
@@ -282,7 +308,7 @@ export default function Dendro(props:DendroProps){
     useEffect(()=>{
         // run for each update to get the most
         // recent value of clickedNode
-        console.log('effect2')
+        // console.log('effect2')
         if(circlesRef.current){
             //  circlesRef,
             const [select, unselect, reselect] = 
@@ -356,8 +382,9 @@ export default function Dendro(props:DendroProps){
     useEffect(()=>{
         if(circlesRef.current)
         circlesRef.current.selectChild().text(function(d) { 
-                const text = mp[d].id === mp[d].name ? 
+                let text = mp[d].id === mp[d].name ? 
                     mp[d].id : `${mp[d].id} ${mp[d].name}`
+                text = `${text} \n${mp[d].leaves!.length} leaves`
                 return text})
     },[props.gc])
 
@@ -404,7 +431,8 @@ export default function Dendro(props:DendroProps){
   		var descField = document.createElement('input');
   		descField.setAttribute('type', 'hidden');
   		descField.setAttribute('name', 'description');
-  		descField.setAttribute('value',data.id);
+        const name = data.id === mp[data.id].name ? data.id : mp[data.id].name
+  		descField.setAttribute('value',name);
   		form.appendChild(descField);
 
   		document.body.appendChild(form);
@@ -423,8 +451,8 @@ export default function Dendro(props:DendroProps){
                     </span>}
                 <button onClick={(e)=>setResetFlag(true)}> <RxReload className='d-icon'/> </button>
                 {enrichrOpen && <div className='enrichr-panel'>
-                    <div><button className='enrichr-panel-btn' onClick={e=>enrichr('Enrichr')}>Gene Symbol Enrich</button></div>
-                    <div><button className='enrichr-panel-btn' onClick={e=>enrichr('DrugEnrichr')}>Drug Name Enrich</button></div>
+                    <div><button className='enrichr-panel-btn' onClick={e=>{enrichr('Enrichr');setEnrichrOpen(false);}}>Gene Symbol Enrich</button></div>
+                    <div><button className='enrichr-panel-btn' onClick={e=>{enrichr('DrugEnrichr');setEnrichrOpen(false);}}>Drug Name Enrich</button></div>
                     <div><button className='enrichr-panel-btn' onClick={e=>toggleEnrichr()}>Close</button></div>
                 </div>}
                 <button onClick={(e)=>toggleEnrichr()} 
@@ -462,7 +490,9 @@ export default function Dendro(props:DendroProps){
                 <svg name={data.id} className={`dendro-svg-${hv}`}></svg>
             </div>
         </div>
-        {data.imgUrl && <Crop horizontal={horizontal} width={width} height={height} imgUrl={data.imgUrl}/>}
+        {data.imgUrl && <Crop horizontal={horizontal} width={imgWidth} 
+        height={imgHeight} imgUrl={data.imgUrl} addCurrentImgUrl={addCurrentImgUrl} 
+        addImgSize={addImgSize} />}
     </div> 
        
 }

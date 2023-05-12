@@ -18,7 +18,8 @@ export default function Crop(props:CropProps){
 
     const formatNum = (num:number) => parseFloat(num.toFixed(2))
     // const lenInit = formatNum(props.horizontal?props.width:props.height)
-    const [len, setLen] = useState<number>(500)
+    const lenInit = props.horizontal ? props.width: props.height
+    const [len, setLen] = useState<number>(lenInit)
     let width, height;
     if(props.horizontal){
         width = len
@@ -32,6 +33,7 @@ export default function Crop(props:CropProps){
         // e.target.value
         const val2 = formatNum(parseFloat(val))
         setLen(val2)
+        props.addImgSize(val2)
     }
 
 
@@ -41,6 +43,7 @@ export default function Crop(props:CropProps){
             imgPreview(imgRef.current!,crop,1,0).then(val=>{
                 urls.push(srcUrl)
                 setSrcUrl(val)
+                props.addCurrentImgUrl(val)
                 setCrop(undefined)
             })
         }
@@ -49,6 +52,7 @@ export default function Crop(props:CropProps){
     function undo(){
         const prevUrl = urls.pop()
         setSrcUrl(prevUrl!)
+        props.addCurrentImgUrl(prevUrl!)
         setCrop(undefined)
     }
 

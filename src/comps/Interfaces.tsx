@@ -37,16 +37,6 @@ interface MP{
     [key: string]: NodeCustom
 }
 
-interface DendroData{
-    mp: MP
-    id: string
-    color?: string
-    clusterWidth?: number
-    clusterHeight?: number
-    horizontal?: boolean
-    imgUrl?: string
-}
-
 interface NodeRender{
     initColorIndex?: number
     color?: string
@@ -57,6 +47,22 @@ interface NodeRender{
 interface RenderMP{
     [key: string]: NodeRender
 }
+
+interface DendroData{
+    mp: MP
+    id: string
+    color?: string
+    clusterWidth?: number
+    clusterHeight?: number
+    horizontal?: boolean
+    imgUrl?: string
+    // the following properties are for session save only.
+    rp?: RenderMP
+    currentImgUrl?:string
+    imgSize?: number
+}
+
+
 
 interface DendroProps {
     data: DendroData
@@ -73,6 +79,8 @@ interface CropProps{
     height: number
     imgUrl: string
     horizontal: boolean
+    addCurrentImgUrl: (a:string)=>void
+    addImgSize: (a:number)=>void
 }
 
 // const node: NodeCustom = {'id':'a','name':'b','x':5,'y':6,'leaf':true,'joints':['a']}

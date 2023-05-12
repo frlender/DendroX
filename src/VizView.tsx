@@ -8,6 +8,7 @@ import { DendroData } from './comps/Interfaces'
 
 import styles from './styles/Home.module.css'
 import {  useNavigate } from "react-router-dom";
+import { EditText, EditTextProps, onSaveProps } from 'react-edit-text'
 
 import * as _ from 'lodash'
 
@@ -33,6 +34,24 @@ function VizView(props:VizProps){
     const [dendrosData, setDendrosData] = useState(props.DendrosData)
     // global update count
     const [gc, setGc] = useState<number>(0)
+    const [sessName,setSessName] = useState<string>('session')
+
+    function saveSession(){
+        // const fname = 'DendroX_session'
+        const strx = JSON.stringify(dendrosData)
+        const blob = new Blob([strx]);
+        let element = document.createElement("a");
+        element.download = `${sessName}.json`;
+        element.href = window.URL.createObjectURL(blob);
+        element.click();
+        element.remove();
+
+        element = document.createElement("a");
+        element.download = `${sessName}.png`;
+        element.href = dendrosData[0].currentImgUrl!;
+        element.click();
+        element.remove();
+    }
 
     const addData = (dendroData: DendroData) => {
         const ids = dendrosData.map(x => x.id)
@@ -66,6 +85,11 @@ function VizView(props:VizProps){
 
     return <main className={styles.main2}>
         <div className='header'>DendroX</div>
+        <div className='session'>
+            <button onClick={e=>saveSession()}>Save</button>
+            <EditText  style={{width: '80px'}} defaultValue={'session'} 
+                        inline onSave={e=>setSessName(e.value)}></EditText>
+        </div>
         <div className='dendros-div'>
             {dendros}
         </div>

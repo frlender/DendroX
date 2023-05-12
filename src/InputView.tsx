@@ -7,6 +7,8 @@ import { DendroData } from './comps/Interfaces'
 import styles from './styles/Home.module.css'
 // import './Home.module.css'
 import {  useNavigate } from "react-router-dom";
+import * as _ from 'lodash'
+
 
 
 export default function InputView(props:InputProps){
@@ -26,6 +28,10 @@ export default function InputView(props:InputProps){
   const readFile = function(e: ChangeEvent<HTMLInputElement>){
     const file = e.target.files![0]
     new Response(file).json().then(json => {
+      if(_.isArray(json)){
+        json[0].imgUrl = undefined;
+        setDendrosDataInit(json)
+      }else
       setDendrosDataInit([{
         'id':'whole',
         'mp':json}])
@@ -41,7 +47,8 @@ export default function InputView(props:InputProps){
   }
 
   const visualize = ()=>{
-    dendrosDataInit![0].horizontal = horizontalInit
+    if(_.isUndefined(dendrosDataInit![0].rp))
+      dendrosDataInit![0].horizontal = horizontalInit
     dendrosDataInit![0].imgUrl = imgUrl
     props.setDendrosData(dendrosDataInit!)
     navigate('/viz')

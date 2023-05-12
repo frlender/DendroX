@@ -142,7 +142,7 @@ a:hover {
   font-size: x-large;
   font-weight: 700;
   text-align: left;
-  margin-bottom:1.5em;
+  margin-bottom:.8em;
   border-bottom: 1px solid #dee2e6!important;
   font-family: sans-serif;
 }
@@ -344,4 +344,13 @@ input[type=file]::file-selector-button:active{
 .enrichr-panel-btn{
   width : 137px;
   margin-top: 5px;
+}
+
+.session{
+  min-height: 36px;
+  margin-bottom: 1em;
+}
+
+.session > button{
+  padding: 5px 12px 5px 10px;
 }
