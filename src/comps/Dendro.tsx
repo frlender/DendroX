@@ -9,6 +9,8 @@ import 'react-edit-text/dist/index.css';
 import { RxColumns,  RxRows, RxEyeOpen, RxFileText, RxImage, RxReload, RxCross2,
     RxCross1,RxArrowDown,RxScissors,RxOpenInNewWindow} from "react-icons/rx";
 
+import * as _ from 'lodash'
+
 
 export default function Dendro(props:DendroProps){
     const data = props.data
@@ -27,6 +29,7 @@ export default function Dendro(props:DendroProps){
 
     const [enrichrOpen,setEnrichrOpen] = useState<boolean>(false)
 
+
     let rpInit: RenderMP = {}
     const names = Object.values(mp).filter(x=>x.leaf).sort((a,b)=>a.x-b.x).map(x=>x.name)
     const keys = Object.keys(mp)
@@ -35,14 +38,28 @@ export default function Dendro(props:DendroProps){
             rpInit[key] = {}
             if(mp[key].leaf) leaf_count+=1
         })
-    if(data.rp) rpInit = data.rp
-    const rp = useRef<RenderMP>(rpInit).current
+    
+    let sessionIndicesInit:number[] = []
+    if(data.rp){
+        rpInit = data.rp
+        _.values(data.rp).forEach(x=>{
+            if(!_.isUndefined(x.initColorIndex))
+            sessionIndicesInit.push(x.initColorIndex)
+        })
+    }
     // // should not do the following to initialize rp!!!
     // // this will set rp[key] to undefined after every render
     // // Always create initial values before useRef or useState
     // Object.keys(mp).forEach(key =>{
     //     rp[key] = {}
     // })
+    const rpRef = useRef<RenderMP>(rpInit)
+    const rp = rpRef.current
+
+    const [getInitColor, returnInitColor] = 
+        useColorStack(sessionIndicesInit,colorDefault)
+
+    
 
     // for session save
     data.rp = rp
@@ -86,7 +103,7 @@ export default function Dendro(props:DendroProps){
         imgWidth = width
         imgHeight = data.imgSize?data.imgSize:500
     }
-    console.log(imgWidth,imgHeight)
+    // console.log(imgWidth,imgHeight)
     
     const pathsRef = useRef<d3.Selection<SVGPathElement, string, SVGGElement, unknown>>()
     const circlesRef = useRef<d3.Selection<SVGCircleElement, string, SVGGElement, unknown>>()
@@ -99,7 +116,6 @@ export default function Dendro(props:DendroProps){
 
     const maxKey = d3.max(keys.map(d => parseInt(d)))!.toString()
 
-    const [getInitColor, returnInitColor] = useColorStack(colorDefault)
 
     const [subCl,setSubCl] = useState<string>()
     // const returnSubCl
@@ -388,6 +404,7 @@ export default function Dendro(props:DendroProps){
                 return text})
     },[props.gc])
 
+    
     const onSave = (o:onSaveProps)=>{
         mp[data.id].name=o.value
         props.setGc(props.gc+1)

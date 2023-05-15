@@ -33,15 +33,15 @@ export default function DendroHelp(){
         
 
         
-        <div className="help-row"> <input type='number' className='input-wh' value={300} min='50' step='50'/> 
-                <input type='number' className='input-wh' value={500} min='50' step='50'/>  : Control the width and height of the dendrogram. 
+        <div className="help-row"> <input  type='number' onChange={e=>e} className='input-wh' value={300} min='50' step='50'/> 
+                <input type='number' onChange={e=>e} className='input-wh' value={500} min='50' step='50'/>  : Control the width and height of the dendrogram. 
         </div>
 
         <div className="help-row help-extra"> If the input includes an optional image file, the following elements will appear above the image: </div>
 
         <div className="help-row"><button><RxCrop className='d-icon'/></button> : The crop button. Click to crop after an area is selected in the image. </div>
 
-        <div className="help-row"><input type='number' className='input-wh' value={550} min='50' step='50'/>  : Control the width or height of the image depending on whether the associated dendrogram is a row or column dendrogram. </div>
+        <div className="help-row"><input type='number' onChange={e=>e} className='input-wh' value={550} min='50' step='50'/>  : Control the width or height of the image depending on whether the associated dendrogram is a row or column dendrogram. </div>
 
         <div className="help-row help-extra">After a non-leaf node is clicked, the following elements will appear:</div>
 
@@ -49,7 +49,7 @@ export default function DendroHelp(){
 
         <div className="help-row"><span className='ctrl-info'>###</span> : The name of the clicked non-leaf node. It is not edittable.</div>
 
-        <div className="help-row"><input style={{height:'23px', width:'48px'}}  type='color' value={'#1f77b4'}/> : The color input box. Click to change the automatically assigned color of the selected cluster.</div>
+        <div className="help-row"><input readOnly style={{height:'23px', width:'48px'}}  type='color' value={'#1f77b4'}/> : The color input box. Click to change the automatically assigned color of the selected cluster.</div>
 
         <div className="help-row help-extra">After the cut button is clicked and a new dendrogram is created, the following elements will appear above the child dendrogram:</div>
 

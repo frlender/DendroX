@@ -11,6 +11,8 @@ import {  useNavigate } from "react-router-dom";
 import { EditText, EditTextProps, onSaveProps } from 'react-edit-text'
 
 import * as _ from 'lodash'
+import { v4 as uuidv4 } from 'uuid';
+import {openDB} from 'idb'
 
 export default function VizHolder(props:VizProps){
     const navigate = useNavigate()
@@ -34,7 +36,13 @@ function VizView(props:VizProps){
     const [dendrosData, setDendrosData] = useState(props.DendrosData)
     // global update count
     const [gc, setGc] = useState<number>(0)
-    const [sessName,setSessName] = useState<string>('session')
+    const [sessName,setSessName] = useState<string>(
+        props.DendrosData[0].sessionName?
+        props.DendrosData[0].sessionName:'session')
+    const [saved, setSaved] = useState(false)
+
+    if(_.isUndefined(props.DendrosData[0]._id))
+        props.DendrosData[0]._id = uuidv4()
 
     function saveSession(){
         // const fname = 'DendroX_session'
@@ -51,6 +59,29 @@ function VizView(props:VizProps){
         element.href = dendrosData[0].currentImgUrl!;
         element.click();
         element.remove();
+    }
+
+    async function saveIndexedDB(){
+        const db = await openDB('dendrox',1,{
+            upgrade(db){
+                db.createObjectStore('sessions')
+            }
+        })
+        // const keys = await db.getAllKeys('sessions')
+        const id = props.DendrosData[0]._id as string
+        const imgBlob = await fetch(dendrosData[0].currentImgUrl!).then(r=>r.blob())
+        const res = await db.put('sessions',{
+            'dendros':dendrosData,
+            'img':imgBlob,
+            'time': new Date(),
+            'name':sessName
+        },id)
+        // const res = await db.get('sessions',id)
+        // console.log('saved',id)
+        setSaved(true)
+        setTimeout(()=>{
+            setSaved(false)
+        },1000)
     }
 
     const addData = (dendroData: DendroData) => {
@@ -86,9 +117,14 @@ function VizView(props:VizProps){
     return <main className={styles.main2}>
         <div className='header'>DendroX</div>
         <div className='session'>
-            <button onClick={e=>saveSession()}>Save</button>
-            <EditText  style={{width: '80px'}} defaultValue={'session'} 
+            <button onClick={e=>saveSession()}>Download</button>
+            <button onClick={e=>saveIndexedDB()}>Save</button>
+            <EditText  style={{width: '80px'}} defaultValue={sessName} 
                         inline onSave={e=>setSessName(e.value)}></EditText>
+             <div className='save-status'>
+             { saved && <span>Saved !</span>}
+            </div>
+            {/* <div className='save-status'>Saved !</div> */}
         </div>
         <div className='dendros-div'>
             {dendros}

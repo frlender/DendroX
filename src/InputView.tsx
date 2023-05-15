@@ -8,8 +8,15 @@ import styles from './styles/Home.module.css'
 // import './Home.module.css'
 import {  useNavigate } from "react-router-dom";
 import * as _ from 'lodash'
+import {openDB} from 'idb'
+
+import {SessionItem} from './comps/Interfaces'
 
 
+function get_date_string(d: Date){
+  // keep only minutes
+  return d.toLocaleString().split(':').slice(0,2).join(':')
+}
 
 export default function InputView(props:InputProps){
   const navigate = useNavigate();
@@ -18,6 +25,19 @@ export default function InputView(props:InputProps){
   
   const [horizontalInit, setHorizontalInit] = useState(true)
   const [imgUrl, setImgUrl] = useState<string>()
+  const [sessItems,setSessItems] = useState<SessionItem[]>([])
+
+  // openDB('dendrox',1,{
+  //   upgrade(db){
+  //       db.createObjectStore('sessions')
+  //   }
+  // }).then(db=>{
+  //   db.getAllKeys('sessions').then(keys=>{
+
+  //   })
+  // })
+  
+  // const [isSession]
 
   const setLayout = (e:FormEvent<HTMLSpanElement>)=>{
     const target = e.target as HTMLInputElement;
@@ -89,6 +109,60 @@ export default function InputView(props:InputProps){
       navigate('/viz')
     })
   }
+  async function checkSessions(){
+    const db = await openDB('dendrox',1,{
+      upgrade(db){
+          db.createObjectStore('sessions')
+      }
+    })
+    // const tx = db.transaction('sessions')
+    // // const arr = []
+    // for await (const cursor of tx.store){
+    //   console.log(cursor)
+    // }
+    // db.clear('sessions')
+    const keys = await db.getAllKeys('sessions')
+    console.log(keys)
+    async function get_formatted(k:IDBValidKey){
+      const val = await db.get('sessions',k)
+      console.log(val)
+      return {'name': val.name as string,
+        'time': get_date_string(val.time),
+        '_time': val.time,
+      'key': k}
+    }
+    const items = await Promise.all(keys.map(get_formatted))
+    const items_sort = _.sortBy(items,x=>-x._time)
+    console.log(items_sort)
+    setSessItems(items_sort)
+  }
+
+  async function removeSession(k:IDBValidKey){
+    const db = await openDB('dendrox',1,{
+      upgrade(db){
+          db.createObjectStore('sessions')
+      }
+    })
+    db.delete('sessions',k).then(x=>checkSessions())
+  }
+
+  useEffect(()=>{
+    checkSessions()
+    // console.log
+  },[])
+
+  async function enterSession(k:IDBValidKey){
+    const db = await openDB('dendrox',1,{
+      upgrade(db){
+          db.createObjectStore('sessions')
+      }
+    })
+    const val = await db.get('sessions',k)
+    val.dendros[0].imgUrl = URL.createObjectURL(val.img)
+    val.dendros[0].sessionName = val.name
+    props.setDendrosData(val.dendros)
+    navigate('/viz')
+  }
 
   return (
     <main className={styles.main}>
@@ -106,8 +180,11 @@ export default function InputView(props:InputProps){
                 type='file' accept='.png,.jpg'/>
             </div>
             
-            
-            {dendrosDataInit && <span className='example'>
+             {/* if .rp exists on dendrosDataInit, then the input is a session file */}
+            {dendrosDataInit && dendrosDataInit[0].rp && <span className='example'>
+              <button className='button-big' onClick={e => visualize()}>Load Session</button>
+            </span>}
+            {dendrosDataInit && !dendrosDataInit[0].rp && <span className='example'>
                 <button className='button-big' onClick={e => visualize()}>Visualize</button>
                 <span className='radios' onChange={setLayout}>
                   <input type='radio' className='radio' name='layout' defaultChecked value='horizontal'></input>
@@ -122,7 +199,15 @@ export default function InputView(props:InputProps){
               <button className='button-big' onClick={e => readExample('2k')}>2k example</button>
             </span>}
           </div>
-
+         
+          {sessItems.length > 0 && <div className='input-sessions'>
+            {sessItems.map(x=>
+              <div key={x.key as string}>
+                <a onClick={e=>enterSession(x.key)}>{x.name} &nbsp;[{x.time}]</a>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <a onClick={e=>removeSession(x.key)}>remove</a>
+                </div>)}
+          </div>}
           <InputHelp></InputHelp>
         </div>
     </main>

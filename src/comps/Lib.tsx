@@ -49,12 +49,16 @@ const isGeneList = function(lst:string[]){
 }
 
 
-function useColorStack(colorDefault: string = '', repeat: number = 5)
+function useColorStack(sessionIndices:number[]=[],
+    colorDefault: string = '', repeat: number = 5)
     :[()=>[number,string],(a: number)=>void]{
     const colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#e377c2', '#9467bd', 
                 '#8c564b', '#d62728', '#cab2d6', '#bcbd22', '#17becf',
                 '#a6cee3', '#b2df8a'].filter(cl => cl!==colorDefault)
-    const [indices, setIndices] = useState<number[]>(d3.range(colors.length*repeat))
+    const indicesInit = d3.range(colors.length*repeat)
+        .filter(x=>!sessionIndices.includes(x))
+    const [indices, setIndices] = useState<number[]>(indicesInit)
+    // console.log('in stack',indices)
     const getInitColor = (): [number,string] =>{
         // initial color for selections
         if(indices.length < 1){
@@ -62,6 +66,7 @@ function useColorStack(colorDefault: string = '', repeat: number = 5)
         }
         const index = indices.shift() as number
         const color = colors[index % colors.length]
+        console.log(index,color,indices)
         setIndices([...indices])
         return [index,color]
     }
@@ -70,6 +75,10 @@ function useColorStack(colorDefault: string = '', repeat: number = 5)
         // indices.sort()
         setIndices([...indices])
     }
+    // const sessionPrime = (rpIndices: number[])=>{
+    //     const newIndices = indices.filter(x=>!rpIndices.includes(x))
+    //     setIndices(newIndices)
+    // }
     return [getInitColor, returnInitColor]
 }
 

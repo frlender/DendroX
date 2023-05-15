@@ -60,6 +60,8 @@ interface DendroData{
     rp?: RenderMP
     currentImgUrl?:string
     imgSize?: number
+    _id?: string // unique id for indexedDB
+    sessionName?:string // name for the session
 }
 
 
@@ -83,6 +85,12 @@ interface CropProps{
     addImgSize: (a:number)=>void
 }
 
+interface SessionItem{
+    name: string
+    time: string
+    key: IDBValidKey
+}
+
 // const node: NodeCustom = {'id':'a','name':'b','x':5,'y':6,'leaf':true,'joints':['a']}
 
-export type {NodeCustom, MP, DendroProps, DendroData, RenderMP, CropProps}
+export type {NodeCustom, MP, DendroProps, DendroData, RenderMP, CropProps, SessionItem}

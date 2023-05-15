@@ -142,7 +142,7 @@ a:hover {
   font-size: x-large;
   font-weight: 700;
   text-align: left;
-  margin-bottom:.8em;
+  margin-bottom:1.5em;
   border-bottom: 1px solid #dee2e6!important;
   font-family: sans-serif;
 }
@@ -347,10 +347,43 @@ input[type=file]::file-selector-button:active{
 }
 
 .session{
+  margin-top: -.8em;
   min-height: 36px;
-  margin-bottom: 1em;
+  /* margin-bottom: 1.2em; */
 }
 
 .session > button{
   padding: 5px 12px 5px 10px;
+}
+
+.input-sessions{
+  text-align: left;
+  margin-bottom: -39px;
+  margin-left: 18%;
+  margin-top: 20px;
+}
+
+.input-sessions > div > a{
+  cursor: pointer;
+}
+
+.save-status{
+  /* margin-bottom: -12px; */
+  padding-top:1px;
+  /* height: */
+  height: 1.6em;
+}
+
+.save-status > span{
+  margin-left: 22px;
+  background-color: #faeac9;
+  background-color: #00000099;
+  color: white;
+  padding-left: 6px;
+  padding-right: 5px;
+  border-radius: 6px;
+  padding-bottom: 3px;
+  font-size: 0.9em;
+  opacity: 1;
+  /* transition: opacity 1s; */
 }

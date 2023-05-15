@@ -37,7 +37,7 @@ export default function Crop(props:CropProps){
     }
 
 
-    console.log(crop)
+    // console.log(crop)
     function doCrop(){
         if(crop){
             imgPreview(imgRef.current!,crop,1,0).then(val=>{
