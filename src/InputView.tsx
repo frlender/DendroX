@@ -54,6 +54,7 @@ export default function InputView(props:InputProps){
       }else
       setDendrosDataInit([{
         'id':'whole',
+        'level': 0,
         'mp':json}])
       })
 }
@@ -101,6 +102,7 @@ export default function InputView(props:InputProps){
       props.setDendrosData([{
         'id':'whole',
         'mp':json,
+        'level': 0,
         'imgUrl':'/dendrox-app/'+config[example].img,
         clusterWidth: width,
         clusterHeight: height,

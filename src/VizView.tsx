@@ -54,11 +54,13 @@ function VizView(props:VizProps){
         element.click();
         element.remove();
 
-        element = document.createElement("a");
-        element.download = `${sessName}.png`;
-        element.href = dendrosData[0].currentImgUrl!;
-        element.click();
-        element.remove();
+        if(dendrosData[0].currentImgUrl){
+            element = document.createElement("a");
+            element.download = `${sessName}.png`;
+            element.href = dendrosData[0].currentImgUrl!;
+            element.click();
+            element.remove();
+        }
     }
 
     async function saveIndexedDB(){
@@ -81,13 +83,22 @@ function VizView(props:VizProps){
         setSaved(true)
         setTimeout(()=>{
             setSaved(false)
-        },1000)
+        },2000)
     }
 
-    const addData = (dendroData: DendroData) => {
+    const addData = (parent_id:string, dendroData: DendroData) => {
         const ids = dendrosData.map(x => x.id)
+        console.log(ids)
         if(!ids.includes(dendroData.id)){
-          dendrosData.push(dendroData)
+        // place the child dendrogram right after its parent and siblings.
+          let idx = ids.indexOf(parent_id)+1
+          console.log('aaa',idx,dendroData.level)
+          while(idx < dendrosData.length && 
+            dendrosData[idx].level >= dendroData.level){
+                idx ++;
+            }
+          console.log(idx)
+          dendrosData.splice(idx,0,dendroData)
           setDendrosData([...dendrosData])
         }
     }

@@ -66,7 +66,7 @@ function useColorStack(sessionIndices:number[]=[],
         }
         const index = indices.shift() as number
         const color = colors[index % colors.length]
-        console.log(index,color,indices)
+        // console.log(index,color,indices)
         setIndices([...indices])
         return [index,color]
     }

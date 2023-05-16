@@ -51,6 +51,7 @@ interface RenderMP{
 interface DendroData{
     mp: MP
     id: string
+    level: number // for child dendrogram ordering
     color?: string
     clusterWidth?: number
     clusterHeight?: number
@@ -69,7 +70,7 @@ interface DendroData{
 interface DendroProps {
     data: DendroData
     gc: number
-    addData: (a: DendroData) => void
+    addData: (id:string, a: DendroData) => void
     rmData: (a: string) => void
     hasDendro: (a: string) => boolean
     countData: () => number

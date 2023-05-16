@@ -151,13 +151,14 @@ export default function Dendro(props:DendroProps){
         const dendroData: DendroData = {
             'id': clickedNode!,
             'mp': mp2,
+            'level': data.level + 1,
             'clusterHeight': parseFloat(ch.toFixed(2)),
             'clusterWidth': parseFloat(cw.toFixed(2)),
             'horizontal': horizontal,
             'color': rp[clickedNode!].color
         }
         // console.log(dendroData)
-        props.addData(dendroData)
+        props.addData(data.id, dendroData)
     }
 
     function download(){
@@ -404,7 +405,7 @@ export default function Dendro(props:DendroProps){
                 return text})
     },[props.gc])
 
-    
+
     const onSave = (o:onSaveProps)=>{
         mp[data.id].name=o.value
         props.setGc(props.gc+1)
@@ -420,18 +421,6 @@ export default function Dendro(props:DendroProps){
 
     const enrichr = (enrichrType:'Enrichr'|'DrugEnrichr')=>{
         // copied from https://github.com/frlender/L1000CDS2/blob/0638df8b0e1fe5732e100e191266b733bd849eb5/public/scripts/services/services.js
-
-        // var defaultOptions = {
-    	// 	description: "",
-    	// 	popup: false
-  		// };
-
-  		// if (typeof options.description == 'undefined')
-    	// 	options.description = defaultOptions.description;
-  		// if (typeof options.popup == 'undefined')
-    	// 	options.popup = defaultOptions.popup;
-  		// if (typeof options.list == 'undefined')
-    	// 	alert('No genes defined.');
 
   		var form = document.createElement('form');
   		form.setAttribute('method', 'post');
