@@ -10,7 +10,7 @@ import { RxColumns,  RxRows, RxEyeOpen, RxFileText, RxImage, RxReload, RxCross2,
     RxCross1,RxArrowDown,RxScissors,RxOpenInNewWindow} from "react-icons/rx";
 
 import * as _ from 'lodash'
-
+import { Tooltip } from 'react-tooltip'
 
 export default function Dendro(props:DendroProps){
     const data = props.data
@@ -29,6 +29,7 @@ export default function Dendro(props:DendroProps){
 
     const [enrichrOpen,setEnrichrOpen] = useState<boolean>(false)
 
+    console.log('dendro',props)
 
     let rpInit: RenderMP = {}
     const names = Object.values(mp).filter(x=>x.leaf).sort((a,b)=>a.x-b.x).map(x=>x.name)
@@ -63,8 +64,10 @@ export default function Dendro(props:DendroProps){
 
     // for session save
     data.rp = rp
-    data.currentImgUrl = data.imgUrl
+    const currentImgUrlRef = useRef(data.imgUrl)
+    data.currentImgUrl = currentImgUrlRef.current
     const addCurrentImgUrl = (url:string)=>{
+        currentImgUrlRef.current = url
         data.currentImgUrl = url
     }
     const addImgSize = (size:number)=>{
@@ -446,6 +449,26 @@ export default function Dendro(props:DendroProps){
   		document.body.removeChild(form);
     }
 
+    function google(){
+        
+        // names.forEach(x=>{
+        //     chrome.tabs.create({'url':'http://google.com/search?q='+x})
+        // })
+        // chrome
+        // names.forEach(function(x){
+        //     let link     = document.createElement('a');
+        //     link.href    = 'http://google.com/search?q='+x;
+        //     link.target  = '_blank';
+        //     link.click();
+        // });
+        names.forEach((x,i)=>{
+            setTimeout(()=>{
+                console.log(i)
+                window.open('http://google.com/search?q='+x,`${i}`)
+            },i*500)
+        })
+    }
+
     return <div className={`dendro-div-${hv}${mo}`}>
         <div className={`dendro-comp-${hv}`}>
             <div className={`dendro-ctrl-${hv}`}>
@@ -459,6 +482,8 @@ export default function Dendro(props:DendroProps){
                 {enrichrOpen && <div className='enrichr-panel'>
                     <div><button className='enrichr-panel-btn' onClick={e=>{enrichr('Enrichr');setEnrichrOpen(false);}}>Gene Symbol Enrich</button></div>
                     <div><button className='enrichr-panel-btn' onClick={e=>{enrichr('DrugEnrichr');setEnrichrOpen(false);}}>Drug Name Enrich</button></div>
+                    {names.length <= 50 && <div><button data-tooltip-id='google' data-tooltip-html='To use this function, please click the "allow pop-up" warning that appear in the address <br/> bar after you first click this button and choose "always allow pop-ups from this site".' className='enrichr-panel-btn' onClick={e=>{google();setEnrichrOpen(false);}}>Google Search</button></div>}
+                    <Tooltip id='google'></Tooltip>
                     <div><button className='enrichr-panel-btn' onClick={e=>toggleEnrichr()}>Close</button></div>
                 </div>}
                 <button onClick={(e)=>toggleEnrichr()} 

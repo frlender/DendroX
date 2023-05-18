@@ -75,17 +75,18 @@ export default function InputView(props:InputProps){
     navigate('/viz')
   }
 
-  const readExample = function(example: 'row' | 'col' | '2k'){
+  const readExample = function(example: 'L1000' | 'gene' | '2k'){
     let nodesFile: string, width: number, 
         height: number, horizontal: boolean
 
     const config = {
-      row: {file:'nodes_row.json', img: 'py_image_50.png'},
+      L1000:{file:'L1000.json',img:'L1000.png'},
+      gene: {file:'genes.json', img: '600_gene_cropped.png'},
       col: {file:'nodes_col.json', img: 'py_image_50.png'},
       '2k': {file:'nodes_row_2k.json', img: 'py_image_2k.png'},
     }
 
-    if(['row','2k'].includes(example)){
+    if(['L1000','gene','2k'].includes(example)){
       width = 300
       height = 500
       horizontal = true
@@ -99,7 +100,14 @@ export default function InputView(props:InputProps){
       return res.json()
       // setData(res.json() as MP)
     }).then(json => {
-      props.setDendrosData([{
+      let dendrosData:DendroData[];
+
+      if(['L1000','gene'].includes(example)){
+        json[0].imgUrl = '/dendrox-app/'+config[example].img
+        dendrosData = json
+      }
+      else
+      dendrosData = [{
         'id':'whole',
         'mp':json,
         'level': 0,
@@ -107,7 +115,9 @@ export default function InputView(props:InputProps){
         clusterWidth: width,
         clusterHeight: height,
         horizontal: horizontal
-      }])
+      }]
+
+      props.setDendrosData(dendrosData)
       navigate('/viz')
     })
   }
@@ -124,10 +134,8 @@ export default function InputView(props:InputProps){
     // }
     // db.clear('sessions')
     const keys = await db.getAllKeys('sessions')
-    console.log(keys)
     async function get_formatted(k:IDBValidKey){
       const val = await db.get('sessions',k)
-      console.log(val)
       return {'name': val.name as string,
         'time': get_date_string(val.time),
         '_time': val.time,
@@ -135,7 +143,7 @@ export default function InputView(props:InputProps){
     }
     const items = await Promise.all(keys.map(get_formatted))
     const items_sort = _.sortBy(items,x=>-x._time)
-    console.log(items_sort)
+    // console.log(items_sort)
     setSessItems(items_sort)
   }
 
@@ -184,7 +192,7 @@ export default function InputView(props:InputProps){
             
              {/* if .rp exists on dendrosDataInit, then the input is a session file */}
             {dendrosDataInit && dendrosDataInit[0].rp && <span className='example'>
-              <button className='button-big' onClick={e => visualize()}>Load Session</button>
+              <button className='button-big' onClick={e => visualize()}>Load session</button>
             </span>}
             {dendrosDataInit && !dendrosDataInit[0].rp && <span className='example'>
                 <button className='button-big' onClick={e => visualize()}>Visualize</button>
@@ -196,8 +204,8 @@ export default function InputView(props:InputProps){
                 </span>
             </span>}
             {!dendrosDataInit && <span className='example'>
-              <button className='button-big' onClick={e => readExample('row')}>Horizontal example</button>
-              <button className='button-big' onClick={e => readExample('col')}>Vertical example</button>
+              <button className='button-big' onClick={e => readExample('L1000')}>L1000 example</button>
+              <button className='button-big' onClick={e => readExample('gene')}>Genes example</button>
               <button className='button-big' onClick={e => readExample('2k')}>2k example</button>
             </span>}
           </div>

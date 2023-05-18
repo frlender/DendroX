@@ -68,6 +68,13 @@ a:hover {
   max-width: 930px;
 }
 
+.help-sub-row{
+  max-width: 930px;
+  text-align: left;
+  margin-left: 1em;
+  margin-top: -10px;
+}
+
 .help-subtitle{
   text-align: left;
   font-style: italic;
@@ -386,4 +393,13 @@ input[type=file]::file-selector-button:active{
   font-size: 0.9em;
   opacity: 1;
   /* transition: opacity 1s; */
+}
+
+.session-format{
+  font-style: italic;
+  margin-left: 1em;
+}
+
+img.popup{
+  vertical-align: bottom;
 }

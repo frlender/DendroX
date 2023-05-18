@@ -13,6 +13,8 @@ import { EditText, EditTextProps, onSaveProps } from 'react-edit-text'
 import * as _ from 'lodash'
 import { v4 as uuidv4 } from 'uuid';
 import {openDB} from 'idb'
+import { Tooltip } from 'react-tooltip'
+import 'react-tooltip/dist/react-tooltip.css'
 
 export default function VizHolder(props:VizProps){
     const navigate = useNavigate()
@@ -44,8 +46,10 @@ function VizView(props:VizProps){
     if(_.isUndefined(props.DendrosData[0]._id))
         props.DendrosData[0]._id = uuidv4()
 
+    console.log('vizView',dendrosData)
     function saveSession(){
         // const fname = 'DendroX_session'
+        dendrosData[0].sessionName = sessName
         const strx = JSON.stringify(dendrosData)
         const blob = new Blob([strx]);
         let element = document.createElement("a");
@@ -72,7 +76,7 @@ function VizView(props:VizProps){
         // const keys = await db.getAllKeys('sessions')
         const id = props.DendrosData[0]._id as string
         const imgBlob = await fetch(dendrosData[0].currentImgUrl!).then(r=>r.blob())
-        const res = await db.put('sessions',{
+        await db.put('sessions',{
             'dendros':dendrosData,
             'img':imgBlob,
             'time': new Date(),
@@ -86,9 +90,10 @@ function VizView(props:VizProps){
         },2000)
     }
 
-    const addData = (parent_id:string, dendroData: DendroData) => {
+    function addData(parent_id:string, dendroData: DendroData){
+        console.log(dendrosData)
         const ids = dendrosData.map(x => x.id)
-        console.log(ids)
+        // console.log(ids)
         if(!ids.includes(dendroData.id)){
         // place the child dendrogram right after its parent and siblings.
           let idx = ids.indexOf(parent_id)+1
@@ -97,10 +102,11 @@ function VizView(props:VizProps){
             dendrosData[idx].level >= dendroData.level){
                 idx ++;
             }
-          console.log(idx)
+        //   console.log(idx)
           dendrosData.splice(idx,0,dendroData)
           setDendrosData([...dendrosData])
         }
+        console.log(dendrosData)
     }
 
     const rmData = (id:string) => {
@@ -124,12 +130,14 @@ function VizView(props:VizProps){
     }
 
     const dendros = dendrosData.map( createDendroEl )
+    const downloadSessionStr = dendrosData[0].imgUrl ? 'a JSON and a PNG files.' : 'a JSON file.'
 
     return <main className={styles.main2}>
         <div className='header'>DendroX</div>
         <div className='session'>
-            <button onClick={e=>saveSession()}>Download</button>
-            <button onClick={e=>saveIndexedDB()}>Save</button>
+            <button data-tooltip-id='save-session' data-tooltip-html={`Download the current session as ${downloadSessionStr}`} onClick={e=>saveSession()}>Download</button>
+            <button data-tooltip-id='save-session' data-tooltip-html="Save the current session in the browser's local storage." onClick={e=>saveIndexedDB()}>Save</button>
+            <Tooltip id='save-session'></Tooltip>
             <EditText  style={{width: '80px'}} defaultValue={sessName} 
                         inline onSave={e=>setSessName(e.value)}></EditText>
              <div className='save-status'>

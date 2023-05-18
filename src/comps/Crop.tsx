@@ -29,6 +29,8 @@ export default function Crop(props:CropProps){
         height = len
     }
 
+    // console.log(srcUrl)
+
     const changeLen = (val:string) => {
         // e.target.value
         const val2 = formatNum(parseFloat(val))

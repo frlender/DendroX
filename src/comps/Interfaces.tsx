@@ -51,7 +51,7 @@ interface RenderMP{
 interface DendroData{
     mp: MP
     id: string
-    level: number // for child dendrogram ordering
+    level: number // for ordering child dendrograms
     color?: string
     clusterWidth?: number
     clusterHeight?: number
