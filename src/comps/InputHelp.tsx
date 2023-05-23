@@ -33,9 +33,9 @@ export default function InputHelp(){
         <div className="help-row"><span className="row-head">Vertical:</span> Visualize it as a column dendrogram.</div>
 
         <div className="help-row help-extra2">After a JSON file in case 2) is submitted:</div>
-        <div className="help-row"><span className="row-head">Load session:</span> Load the downloaded session in the JSON file.</div>
+        <div className="help-row"><span className="row-head">Load session:</span> Load the session stored in the downloaded JSON file.</div>
 
-        <div className="help-row">A session could be also saved in the browser's local storage by clicking on the save session button in the visualization view. After a session is saved, it could be retrived in the this view by clicking on its session link. The session links are located below the JSON input element and in the format of: <span className="session-format">Session name  [year/month/day hour:minute]</span></div>
+        <div className="help-row">A session could be also saved in the browser's local storage by clicking on the save session button in the visualization view. After a session is saved, it could be retrived in the this view by clicking on the session link. The session links are located below the JSON input element and in the format of: <span className="session-format">Session name  [year/month/day hour:minute]</span></div>
        
         <div className="help-row help-extra3">Browser Compatibility:</div>
         {/* <div className="help-subtitle">Please use chrome for best experience.</div> */}

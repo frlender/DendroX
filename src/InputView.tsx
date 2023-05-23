@@ -3,7 +3,7 @@ import { RxColumns,  RxRows} from "react-icons/rx"
 
 import InputHelp from './comps/InputHelp'
 import { InputProps } from './comps/Interfaces2'
-import { DendroData } from './comps/Interfaces'
+import { MP,DendroData } from './comps/Interfaces'
 import styles from './styles/Home.module.css'
 // import './Home.module.css'
 import {  useNavigate } from "react-router-dom";
@@ -45,11 +45,27 @@ export default function InputView(props:InputProps){
       : setHorizontalInit(false)
   }
 
+  const setMp = function(dendrosData:DendroData[]){
+        // Use the root mp for all DendroData
+        const root = dendrosData[0]
+        dendrosData.forEach((x,i)=>{
+          if(i>0){
+            const mp2:MP = {}
+            const node = root.mp[x.id]
+            node.joints!.concat(node.leaves!).forEach(d=>{
+              mp2[d] = root.mp[d]
+            })
+            x.mp = mp2
+          }
+        })
+  }
+
   const readFile = function(e: ChangeEvent<HTMLInputElement>){
     const file = e.target.files![0]
     new Response(file).json().then(json => {
       if(_.isArray(json)){
         json[0].imgUrl = undefined;
+        setMp(json as DendroData[])
         setDendrosDataInit(json)
       }else
       setDendrosDataInit([{
@@ -104,6 +120,7 @@ export default function InputView(props:InputProps){
 
       if(['L1000','gene'].includes(example)){
         json[0].imgUrl = '/dendrox-app/'+config[example].img
+        setMp(json as DendroData[])
         dendrosData = json
       }
       else
@@ -214,7 +231,7 @@ export default function InputView(props:InputProps){
             {sessItems.map(x=>
               <div key={x.key as string}>
                 <a onClick={e=>enterSession(x.key)}>{x.name} &nbsp;[{x.time}]</a>
-                &nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <a onClick={e=>removeSession(x.key)}>remove</a>
                 </div>)}
           </div>}

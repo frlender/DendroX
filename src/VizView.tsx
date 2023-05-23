@@ -50,6 +50,12 @@ function VizView(props:VizProps){
     function saveSession(){
         // const fname = 'DendroX_session'
         dendrosData[0].sessionName = sessName
+        //TODO: mp is shared between all dendroData, consider only save one copy.
+        // The code below, however, does not work.
+        // dendrosData.forEach((e,i)=>{
+        //     if(i>0)
+        //     delete e['mp']
+        // })
         const strx = JSON.stringify(dendrosData)
         const blob = new Blob([strx]);
         let element = document.createElement("a");
