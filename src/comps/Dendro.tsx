@@ -149,6 +149,7 @@ export default function Dendro(props:DendroProps){
             ch = node.y/mp[maxKey].y*clusterHeight
             cw = node.leaves!.length/
             mp[maxKey].leaves!.length*clusterWidth
+            cw = cw < 300 ? 300:cw
         }
         
         const dendroData: DendroData = {
@@ -175,7 +176,7 @@ export default function Dendro(props:DendroProps){
             }).join('\n')
         const blob = new Blob([strx]);
         const element = document.createElement("a");
-        element.download = `${fname}.tsv`;
+        element.download = `${fname}.txt`;
         element.href = window.URL.createObjectURL(blob);
         element.click();
         element.remove();

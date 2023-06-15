@@ -42,7 +42,8 @@ function VizView(props:VizProps){
         props.DendrosData[0].sessionName?
         props.DendrosData[0].sessionName:'session')
     const [saved, setSaved] = useState(false)
-
+    const navigate = useNavigate()
+    
     if(_.isUndefined(props.DendrosData[0]._id))
         props.DendrosData[0]._id = uuidv4()
 
@@ -139,7 +140,7 @@ function VizView(props:VizProps){
     const downloadSessionStr = dendrosData[0].imgUrl ? 'a JSON and a PNG files.' : 'a JSON file.'
 
     return <main className={styles.main2}>
-        <div className='header'>DendroX</div>
+        <div className='header' onClick={()=>navigate('/')}>DendroX</div>
         <div className='session'>
             <button data-tooltip-id='save-session' data-tooltip-html={`Download the current session as ${downloadSessionStr}`} onClick={e=>saveSession()}>Download</button>
             <button data-tooltip-id='save-session' data-tooltip-html="Save the current session in the browser's local storage." onClick={e=>saveIndexedDB()}>Save</button>

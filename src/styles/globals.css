@@ -152,6 +152,7 @@ a:hover {
   margin-bottom:1.5em;
   border-bottom: 1px solid #dee2e6!important;
   font-family: sans-serif;
+  cursor: pointer;
 }
 
 button{
@@ -351,6 +352,11 @@ input[type=file]::file-selector-button:active{
 .enrichr-panel-btn{
   width : 137px;
   margin-top: 5px;
+}
+
+.enrichr-panel-btn-help{
+  width : 137px;
+  /* margin-top: 5px; */
 }
 
 .session{
