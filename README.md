@@ -10,7 +10,7 @@ https://frlender.github.io/dendrox-app/
 
 
 
-![image](https://github.com/frlender/dendrox/blob/main/asset/Figure_2.png)
+![image](https://github.com/frlender/dendrox/blob/main/asset/Figure_2.jpg)
 
 
 
