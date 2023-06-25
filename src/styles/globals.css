@@ -409,3 +409,11 @@ input[type=file]::file-selector-button:active{
 img.popup{
   vertical-align: bottom;
 }
+
+.mt-neg{
+  margin-top: -4px;
+}
+
+.mt-1{
+  margin-top: 4px;
+}

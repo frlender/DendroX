@@ -20,22 +20,22 @@ export default function InputHelp(){
 
         <div className='help-sub-row'> <span className="row-head">2)</span> If the input JSON file is a session file, it should be the session image downloaded along with the JSON file.</div>
 
-        <div className="help-row"><span className="row-head">L1000 example:</span> Example of a dendrogram that cluster 297 bioactive LINCS L1000 compounds. (Link to input files: <a target='_blank' rel='noreferrer' href='https://github.com/frlender/DendroX/blob/main/public/L1000.json'>json</a>, <a target='_blank' rel='noreferrer' href='https://github.com/frlender/DendroX/blob/main/public/L1000.png'>png</a>.) </div>
+        <div className="help-row mt-1"><span className="row-head">L1000 example:</span> Example of a dendrogram that cluster 297 bioactive LINCS L1000 compounds. (Link to input files: <a target='_blank' rel='noreferrer' href='https://github.com/frlender/DendroX/blob/main/public/L1000.json'>json</a>, <a target='_blank' rel='noreferrer' href='https://github.com/frlender/DendroX/blob/main/public/L1000.png'>png</a>.) </div>
 
-        <div className="help-row"><span className="row-head">Genes example:</span> Example of a dendrogram that cluster a gene expression matrix with 600 genes. (Link to input files: <a target='_blank' rel='noreferrer' href='https://github.com/frlender/dendrox-app/blob/main/genes.json'>json</a>, <a target='_blank' rel='noreferrer' href='https://github.com/frlender/dendrox-app/blob/main/600_gene_cropped.png'>png</a>.)</div>
+        <div className="help-row mt-neg"><span className="row-head">Genes example:</span> Example of a dendrogram that cluster a gene expression matrix with 600 genes. (Link to input files: <a target='_blank' rel='noreferrer' href='https://github.com/frlender/dendrox-app/blob/main/genes.json'>json</a>, <a target='_blank' rel='noreferrer' href='https://github.com/frlender/dendrox-app/blob/main/600_gene_cropped.png'>png</a>.)</div>
         
-        <div className="help-row"><span className="row-head">2k example:</span> Example of a dendrogram with 2,000 leaf nodes demonstrating the scalability of DendroX. (Link to input files: <a target='_blank' rel='noreferrer' href='https://github.com/frlender/dendrox-app/blob/main/nodes_row_2k.json'>json</a>, <a target='_blank' rel='noreferrer' href='https://github.com/frlender/dendrox-app/blob/main/py_image_2k.png'>png</a>.) </div>
+        <div className="help-row mt-neg"><span className="row-head">2k example:</span> Example of a dendrogram with 2,000 leaf nodes demonstrating the scalability of DendroX. (Link to input files: <a target='_blank' rel='noreferrer' href='https://github.com/frlender/dendrox-app/blob/main/nodes_row_2k.json'>json</a>, <a target='_blank' rel='noreferrer' href='https://github.com/frlender/dendrox-app/blob/main/py_image_2k.png'>png</a>.) </div>
 
 
         <div className="help-row help-extra2">After a JSON file in case 1) is submitted:</div>
-        <div className="help-row"><span className="row-head">Visualize:</span> Visualize the dendrogram described in the JSON file.</div>
-        <div className="help-row"><span className="row-head">Horizontal:</span> Visualize it as a row dendrogram. Default.</div>
-        <div className="help-row"><span className="row-head">Vertical:</span> Visualize it as a column dendrogram.</div>
+        <div className="help-row mt-neg"><span className="row-head">Visualize:</span> Visualize the dendrogram described in the JSON file.</div>
+        <div className="help-row mt-neg"><span className="row-head">Horizontal:</span> Visualize it as a row dendrogram. Default.</div>
+        <div className="help-row mt-neg"><span className="row-head">Vertical:</span> Visualize it as a column dendrogram.</div>
 
         <div className="help-row help-extra2">After a JSON file in case 2) is submitted:</div>
-        <div className="help-row"><span className="row-head">Load session:</span> Load the session stored in the downloaded JSON file.</div>
+        <div className="help-row mt-neg"><span className="row-head">Load session:</span> Load the session stored in the downloaded JSON file.</div>
 
-        <div className="help-row">A session could be also saved in the browser's local storage by clicking on the save session button in the visualization view. After a session is saved, it could be retrived in the this view by clicking on the session link. The session links are located below the JSON input element and in the format of: <span className="session-format">Session name  [year/month/day hour:minute]</span></div>
+        <div className="help-row mt-1">A session could be also saved in the browser's local storage by clicking on the save session button in the visualization view. After a session is saved, it could be retrived in the this view by clicking on the session link. The session links are located below the JSON input element and in the format of: <span className="session-format">Session name  [year/month/day hour:minute]</span></div>
        
         <div className="help-row help-extra3">Browser Compatibility:</div>
         {/* <div className="help-subtitle">Please use chrome for best experience.</div> */}
