@@ -47,7 +47,7 @@ a:hover {
   border-bottom: 0px;
   border-left: 0px;
   border-right: 0px;
-  margin-top: 5em;
+  margin-top: 3.9em;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -75,6 +75,15 @@ a:hover {
   margin-top: -10px;
 }
 
+.help-sub-sub-row{
+  max-width: 900px;
+  text-align: left;
+  margin-left: 3em;
+  margin-top: -6px;
+}
+.extra-margin{
+  margin-top: -5px
+}
 .help-subtitle{
   text-align: left;
   font-style: italic;

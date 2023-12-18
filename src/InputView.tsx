@@ -26,6 +26,7 @@ export default function InputView(props:InputProps){
   const [horizontalInit, setHorizontalInit] = useState(true)
   const [imgUrl, setImgUrl] = useState<string>()
   const [sessItems,setSessItems] = useState<SessionItem[]>([])
+  // const [err,setErr] = useState<string>()
 
   // openDB('dendrox',1,{
   //   upgrade(db){
@@ -62,6 +63,7 @@ export default function InputView(props:InputProps){
 
   const readFile = function(e: ChangeEvent<HTMLInputElement>){
     const file = e.target.files![0]
+    console.log('aa')
     new Response(file).json().then(json => {
       if(_.isArray(json)){
         json[0].imgUrl = undefined;
@@ -72,6 +74,13 @@ export default function InputView(props:InputProps){
         'id':'whole',
         'level': 0,
         'mp':json}])
+      }).catch((err:any)=>{
+        if(err.name === 'SyntaxError')
+          alert('The input file is not a valid JSON. Please '+
+            'make sure the input file is generated either using '+
+            'the get_json function or the DendroX Cluster program '+
+            'as described in the help section below.')
+        // console.log(err.name,err.message)
       })
 }
 
@@ -195,6 +204,7 @@ export default function InputView(props:InputProps){
     <main className={styles.main}>
         <div className='header'>DendroX</div>
         <div>
+          {/* {err && <div>{err}</div>} */}
           <div className='input-row'>
             <div className='input-col'>
               <div className='input-label'>JSON file (required):</div>

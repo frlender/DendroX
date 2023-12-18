@@ -5,7 +5,7 @@ import { EditText } from 'react-edit-text'
 
 export default function DendroHelp(){
     return <div className="help-container">
-         <div className="help-row">Mouse over a non-leaf node in the dendrogram to highlight a cluster. Click on a non-leaf node to select a cluster. Click again to unselect it. Click on any white space to unfocus a selected non-leaf node. The app will automatically assign a color to a clicked cluster. If a cluster heatmap image is provided, drag your mouse over the heatmap area and click the crop button to crop it. The cropped heatmap should be aligned with the dendrogram.</div>
+         <div className="help-row">Mouse over a non-leaf node in the dendrogram to highlight a cluster. Click on a non-leaf node to select a cluster. Click again to deselect it. Click on any white space to unfocus a selected non-leaf node. The app will automatically assign a color to a clicked cluster. If a cluster heatmap image is provided, drag your mouse over the heatmap area and click the crop button to crop it. The cropped heatmap should be aligned with the dendrogram.</div>
         
         <div className="help-row">
             <button>Download</button>
@@ -19,14 +19,14 @@ export default function DendroHelp(){
         <div className="help-row"><button><RxOpenInNewWindow className='d-icon'/></button> : The external tool panel. Pass the labels of the leaf nodes to an external app for interpretation. It has three buttons:</div>
 
         <div className='help-sub-row'><span className="row-head">1)</span> <button className='enrichr-panel-btn-help'>Gene Symbol Enrich</button> : If the labels are gene symbols, pass them to the <a target='_blank' rel='noreferrer' href='https://maayanlab.cloud/Enrichr/'>Enrichr app</a> for gene set enrichment analysis.</div>
-        <div className='help-sub-row'><span className="row-head">2)</span> <button className='enrichr-panel-btn-help'>Drug Name Enrich</button> : If the labels are drug names, pass them to the <a target='_blank' rel='noreferrer' href='https://maayanlab.cloud/DrugEnrichr/'>DrugEnrichr app</a> for drug name-set enrichment analysis. The app is a variant of the popular Enrichr app and use drug name sets instead of gene sets for enrichment analysis.</div>
-        <div className='help-sub-row'><span className="row-head">3)</span> <button className='enrichr-panel-btn-help'>Google Search</button> : Open a new tab for each label and search it in Google. The modern browsers by default prevent a web site from opening many tabs. To use this function, users need to click the pop-up warning icon <img className='popup' src='/dendrox-app/popup.png'></img> that will appear in the address bar after you first click this button, and choose "always allow pop-ups from this site". The warning icon will appear on the right of the address URL in Chrome and Edge and on the left in Firefox. The Google Search button will only appear if the leaf nodes are less than 50. Otherwise, too many tabs are opened that may crash the computer.</div>
+        <div className='help-sub-row'><span className="row-head">2)</span> <button className='enrichr-panel-btn-help'>Drug Name Enrich</button> : If the labels are drug names, pass them to the <a target='_blank' rel='noreferrer' href='https://maayanlab.cloud/DrugEnrichr/'>DrugEnrichr app</a> for drug name-set enrichment analysis. The app is a variant of the popular Enrichr app and uses drug name sets instead of gene sets for enrichment analysis.</div>
+        <div className='help-sub-row'><span className="row-head">3)</span> <button className='enrichr-panel-btn-help'>Google Search</button> : Open a new tab for each label and search it in Google. The modern browsers by default prevent a website from opening many tabs. To use this function, users need to click the pop-up warning icon <img className='popup' src='/dendrox-app/popup.png'></img> that will appear in the address bar after you first click this button, and choose "always allow pop-ups from this site". The warning icon will appear on the right of the address URL in Chrome and Edge and on the left in Firefox. The Google Search button will only appear if the leaf nodes are less than 50. Otherwise, too many tabs are opened that may crash the computer.</div>
 
         {/* <div>symbols to the <a target='_blank' rel='noreferrer' href='https://maayanlab.cloud/Enrichr/'>Enrichr app</a> for gene set enrichment analysis. DendroX will automatically detect if the labels are gene symbols. If they are not, this button will not show. <span className="row-head">Caution! : the Enrichr app may save your gene list in its server.</span> Enrichr requires a <a target='_blank' rel='noreferrer' href='https://maayanlab.cloud/Enrichr/help#terms'>license</a> for commercial uses. Users could copy the gene symbols from the text box opened by the view button and paste them into another functional annotation app they prefer. </div> */}
 
         <div className="help-row"><button>
                     <RxEyeOpen className='d-icon'></RxEyeOpen>
-                </button> : The view button. View the the labels of the leaf nodes in a text box on the left. Click again to close the box. </div>
+                </button> : The view button. View the labels of the leaf nodes in a text box on the left. Click again to close the box. </div>
 
         <div className="help-row"><button>
                     <RxArrowDown className='d-icon'/>
@@ -36,7 +36,7 @@ export default function DendroHelp(){
         <div className="help-row"><button >
                     <RxArrowDown className='d-icon'/>
                     <RxImage className='d-icon'/>
-                </button> : The SVG download button. Download the dendrogram as a SVG file edittable in Adobe Illustrator and Inkscape. The file name will be the name of the root node. &quot;whole&quot; is the default name for the input dendrogram. </div>
+                </button> : The SVG download button. Download the dendrogram as a SVG file editable in Adobe Illustrator and Inkscape. The file name will be the name of the root node. &quot;whole&quot; is the default name for the input dendrogram. </div>
 
        
 
@@ -60,13 +60,13 @@ export default function DendroHelp(){
 
         <div className="help-row"><button><RxScissors className='d-icon'/></button> : The cut button. Create a new dendrogram for the selected cluster. It is disabled after creation of the new dendrogram.</div>
 
-        <div className="help-row"><span className='ctrl-info'>###</span> : The name of the clicked non-leaf node. It is not edittable.</div>
+        <div className="help-row"><span className='ctrl-info'>###</span> : The name of the clicked non-leaf node. It is not editable.</div>
 
         <div className="help-row"><input readOnly style={{height:'23px', width:'48px'}}  type='color' value={'#1f77b4'}/> : The color input box. Click to change the automatically assigned color of the selected cluster.</div>
 
         <div className="help-row help-extra">After the cut button is clicked and a new dendrogram is created, the following elements will appear above the child dendrogram:</div>
 
-        <div className="help-row"><EditText  style={{width: '50px'}} defaultValue={'###'} inline></EditText> : The name of the child dendrogram. It is edittable. Defaults to the name of the root node. Any change to the name will be memorized in the parent dendrogram.</div>
+        <div className="help-row"><EditText  style={{width: '50px'}} defaultValue={'###'} inline></EditText> : The name of the child dendrogram. It is editable. Defaults to the name of the root node. Any change to the name will be memorized in the parent dendrogram.</div>
 
         <div className="help-row"> <button><RxCross2 className='d-icon'/></button> : The close button. Close the child dendrogram. </div>
         
