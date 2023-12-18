@@ -8,6 +8,10 @@ R and Python packages that wrap the get_json function to generate input files:
 
 https://github.com/frlender/dendrox-util
 
+A graphic user interface to generate input files:
+
+https://github.com/frlender/dendrox-cluster
+
 The data sets and code that replicate the results in this article are available on Github at the following URLs:
 
 https://github.com/frlender/DendroX/tree/main/public
