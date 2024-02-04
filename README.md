@@ -1,7 +1,9 @@
 # DendroX
 
 
+Multi-level multi-cluster selections in a dendrogram
 
+https://frlender.github.io/dendrox-app/
 
 ## Introduction
 
@@ -18,10 +20,6 @@
 
 
 ## Resource
-
-Multi-level multi-cluster selections in a dendrogram
-
-https://frlender.github.io/dendrox-app/
 
 R and Python packages that wrap the get_json function to generate input files:
 
